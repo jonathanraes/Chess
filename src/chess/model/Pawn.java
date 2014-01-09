@@ -132,22 +132,7 @@ ChessBoard board;
 		return false;
 	}
 	
-	public int[] getPossibleMoves(int fromrow, int fromcol){
-		if(this.getTeam().equals("White")){
-			if(board.getPiece(fromrow, fromcol+1) == null){ //move 1 square straight ahead
-				int[] possible = {fromrow, fromcol+1};
-				return possible;
-			}
-		}
-		if(fromcol == 1){
-			if(board.getPiece(fromrow, 2) == null){
-				if(board.getPiece(fromrow, 3) == null){
-						int[] possible = {fromrow, 3};
-						return possible;
-					}
-				}
-		}
-		return null;
+
 
 //		
 //				return false;
@@ -186,5 +171,5 @@ ChessBoard board;
 //		}
 //		return false;
 		
-	}
+	
 }

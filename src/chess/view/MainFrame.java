@@ -238,16 +238,17 @@ public class MainFrame extends JFrame implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		ChessPiece selected = board.getSelectedPiece();
-//		int[] selectedpiecetile = {0,0};
-//		for(int i = 0; i < 8; i++){
-//			for(int col = 0; col < 8; col++){
-//				if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){
-//					selectedpiecetile[0] = col;
-//					selectedpiecetile[1] = i;
-//				}
-//				
-//			}
-//		}
+		int[] selectedpiecetile = {0,0};
+		for(int i = 0; i < 8; i++){
+			for(int col = 0; col < 8; col++){
+				if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){
+					selectedpiecetile[0] = col;
+					selectedpiecetile[1] = i;
+					System.out.println("Setting Selected Piece tile: \nselectedpiecetile[0]= " + col + "\nselectedpiecetile[1]= " + i);
+				}
+				
+			}
+		}
 		panel.removeAll();
 		int count = 0;
 		for(int i = 0; i < 8; i++){
@@ -257,42 +258,36 @@ public class MainFrame extends JFrame implements Observer{
 				tile.setVisible(true);
 				pieces = new ChessPieceIcon(board.getPiece(col, i));
 				int row = (count / 8) % 2;
+				boolean check = false;
 				if (row == 0){
-//					for(TilesEnum values: TilesEnum.values()){
-//						if(values.name().substring(1).equals(tile.getTileNumber())){ //searching row and col of current building tile
-//							if(selected instanceof Pawn){
-//								Pawn pawn = (Pawn) selected;
-//								int[] ispossible = pawn.getPossibleMoves(selectedpiecetile[0], selectedpiecetile[1]);
-//								if(ispossible[0] == values.getRow() && ispossible[1] == values.getCol()) {
-//									tile.setBackground(Color.green);
-//								}
-//							}
-//						}
-//					}
+					if(selected instanceof Pawn){
+						Pawn pawn = (Pawn) selected;
+							if(pawn.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+								tile.setBackground(Color.green);
+								System.out.println("Setting green background for " + i + "," +col);
+								check = true;
+							}
+					}
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else{
+					else if(!check){
 						tile.setBackground( count % 2 == 0 ? Color.black : Color.white );
 					}
 				}
-//				}
 				else{
-//					if(board.getSelectedPiece() instanceof Pawn){
-//						Pawn pawn = (Pawn) board.getSelectedPiece();
-//						for(TilesEnum values: TilesEnum.values()){
-//							if(values.name().substring(1).equals(tile.getTileNumber())){ //searching row and col of current building tile
-//								
-//								if(pawn.getPossibleMoves(col, i, values.getRow(), values.getCol())){
-//								tile.setBackground(Color.white);
-//							}
-//						}
-//					}
-//					}
+					if(selected instanceof Pawn){
+						Pawn pawn = (Pawn) selected;
+							if(pawn.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+								tile.setBackground(Color.green);
+								System.out.println("Setting green background for " + i + "," +col);
+								check = true;
+							}
+					}
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else{
+					else if(!check){
 						tile.setBackground( count % 2 == 0 ? Color.white : Color.black );
 					}
 				}
@@ -304,9 +299,6 @@ public class MainFrame extends JFrame implements Observer{
 		}
 			add(panel);
 			setVisible(true);
-
-			//this.repaint();
-			
 	}
 	public void setPaneText(String text){
 		Font font1 = new Font("Trebuchet MS", Font.PLAIN, 19);
