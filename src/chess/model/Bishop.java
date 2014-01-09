@@ -15,8 +15,8 @@ ChessBoard board;
 				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
 					if(board.getPiece(fromrow+i, fromcol+i) != null){
 						if((board.getPiece(fromrow+i, fromcol+i).getTeam().equals("White") && (this.getTeam().equals("Black"))) || (board.getPiece(fromrow+i, fromcol+i).getTeam().equals("White") && (this.getTeam().equals("Black")))){
-					//encounter
-					board.encounter(fromrow, fromcol, destrow, destcol);
+							//encounter
+							board.encounter(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							System.out.println("Invalid move!");
@@ -83,6 +83,13 @@ ChessBoard board;
 			System.out.println("Invalid move!");
 			return false;
 		}
+
+	@Override
+	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 		
 
 }

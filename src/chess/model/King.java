@@ -108,4 +108,11 @@ public class King extends ChessPiece {
 	public String toString(){
 		return this.getName();
 	}
+
+	@Override
+	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

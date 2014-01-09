@@ -19,4 +19,6 @@ public abstract class ChessPiece {
 		return name;
 	}
 	public abstract boolean move(int fromrow, int fromcol, int destrow, int destcol);
+	
+	public abstract boolean isPossibleMove(int fromrow, int fromcol, int destrow, int destcol);
 }

@@ -260,9 +260,9 @@ public class MainFrame extends JFrame implements Observer{
 				int row = (count / 8) % 2;
 				boolean check = false;
 				if (row == 0){
-					if(selected instanceof Pawn){
-						Pawn pawn = (Pawn) selected;
-							if(pawn.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+					if(selected instanceof ChessPiece){
+						ChessPiece piece = (ChessPiece) selected;
+							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
 								tile.setBackground(Color.green);
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
@@ -276,9 +276,9 @@ public class MainFrame extends JFrame implements Observer{
 					}
 				}
 				else{
-					if(selected instanceof Pawn){
-						Pawn pawn = (Pawn) selected;
-							if(pawn.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+					if(selected instanceof ChessPiece){
+						ChessPiece piece = (ChessPiece) selected;
+							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
 								tile.setBackground(Color.green);
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;

@@ -125,6 +125,7 @@ public class ChessBoard extends Observable{
 	}
 	
 	public ChessPiece getPiece(int row, int col){
+		ChessPiece dd = board[row][col];
 		return board[row][col];
 	}
 	

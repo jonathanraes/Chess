@@ -10,7 +10,7 @@ public class Rook extends ChessPiece {
 
 	public boolean move(int fromrow, int fromcol, int destrow, int destcol){
 		if(fromrow == destrow){ 
-			//vertical movement'
+			//vertical movement
 			if(destcol < fromcol){ //moving downwards
 				for(int col = fromcol; col > destcol; col--){
 					if(board.getPiece(destrow, col-1) == null){
@@ -19,7 +19,6 @@ public class Rook extends ChessPiece {
 					else if((board.getPiece(destrow, col-1).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(destrow, col-1).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, destrow, col-1)){
-							board.move(fromrow, fromcol, destrow, col-1);
 							return true;
 						}
 						else{ //failed to move (error message)
@@ -44,7 +43,6 @@ public class Rook extends ChessPiece {
 					else if((board.getPiece(destrow, col+1).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(destrow, col+1).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, destrow, col+1)){
-							board.move(fromrow, fromcol, destrow, col+1);
 							return true;
 						}
 						else{ //failed to move (error message)
@@ -57,7 +55,7 @@ public class Rook extends ChessPiece {
 						return false;
 					}
 				}
-				board.move(fromrow, fromcol, destrow, destcol); //has not run into any complications
+				board.move(fromrow, fromcol, destrow, destcol);
 				return true;
 				
 			}
@@ -72,7 +70,6 @@ public class Rook extends ChessPiece {
 					else if((board.getPiece(row+1, destcol).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(row+1, destcol).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, row+1, destcol)){
-							board.move(fromrow, fromcol, row+1, destcol);
 							return true;
 						}
 					}
@@ -92,7 +89,6 @@ public class Rook extends ChessPiece {
 					else if((board.getPiece(row-1, destcol).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(row-1, destcol).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, row-1, destcol)){
-							board.move(fromrow, fromcol, row-1, destcol);
 							return true;
 						}
 					}
@@ -102,6 +98,85 @@ public class Rook extends ChessPiece {
 					}
 				}
 				board.move(fromrow, fromcol, destrow, destcol);
+				return true;
+			}
+		}
+		System.out.println("Invalid move!");
+		return false;
+	}
+
+	@Override
+	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		if(fromrow == destrow){ 
+			//vertical movement
+			if(destcol < fromcol){ //moving downwards
+				for(int col = fromcol; col > destcol; col--){
+					if(board.getPiece(destrow, col-1) == null){
+						
+					}
+					else if((board.getPiece(destrow, col-1).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(destrow, col-1).getTeam().equals("White") && this.getTeam().equals("Black"))){
+						//ENCOUNTER
+							return true;
+					}
+					else{
+						System.out.println("Invalid move!");
+						return false;
+					}
+				}
+				return true;
+				
+			}
+			else{ //moving upwards	
+				for(int col = fromcol; col < destcol; col++){
+					if(board.getPiece(destrow, col+1) == null){
+						
+					}
+					else if((board.getPiece(destrow, col+1).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(destrow, col+1).getTeam().equals("White") && this.getTeam().equals("Black"))){
+						//ENCOUNTER
+						return true;
+					}
+					else{ //either there is a own teams piece in the way or move is against the rules
+						System.out.println("Invalid move!");
+						return false;
+					}
+				}
+				return true;
+				
+			}
+		}
+		else if(fromcol == destcol){ 
+			//horizontal movement
+			if(fromrow < destrow){ //moving to the right
+				for(int row = fromrow; row < destrow; row++){
+					if(board.getPiece(destrow, fromcol) == null){
+						
+					}
+					else if(!board.getPiece(destrow, destcol).getTeam().equals(board.getSelectedPiece().getTeam())){
+						//ENCOUNTER
+						System.out.println(this.getTeam());
+							return true;
+					}
+					else{
+						return false;
+					}
+				}
+				return true;
+			}
+			else{ //moving to the left
+				for(int row = fromrow; row > destrow; row--){
+					if(board.getPiece(row-1, fromcol) == null){
+						
+					}
+					else if((board.getPiece(row-1, destcol).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(row-1, destcol).getTeam().equals("White") && this.getTeam().equals("Black"))){
+						//ENCOUNTER
+							return true;
+					}
+					else{
+						System.out.println("Invalid move!");
+						return false;
+					}
+				}
 				return true;
 			}
 		}

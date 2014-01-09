@@ -14,4 +14,11 @@ public class Knight extends ChessPiece {
 		return true;
 	}
 
+	@Override
+	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

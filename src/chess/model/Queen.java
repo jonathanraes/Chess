@@ -21,7 +21,6 @@ public class Queen extends ChessPiece {
 					else if((board.getPiece(destrow, col-1).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(destrow, col-1).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, destrow, col-1)){
-							board.move(fromrow, fromcol, destrow, col-1);
 							return true;
 						}
 						else{ //failed to move (error message)
@@ -46,7 +45,6 @@ public class Queen extends ChessPiece {
 					else if((board.getPiece(destrow, col+1).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(destrow, col+1).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, destrow, col+1)){
-							board.move(fromrow, fromcol, destrow, col+1);
 							return true;
 						}
 						else{ //failed to move (error message)
@@ -74,7 +72,6 @@ public class Queen extends ChessPiece {
 					else if((board.getPiece(row+1, destcol).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(row+1, destcol).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, row+1, destcol)){
-							board.move(fromrow, fromcol, row+1, destcol);
 							return true;
 						}
 					}
@@ -94,7 +91,6 @@ public class Queen extends ChessPiece {
 					else if((board.getPiece(row-1, destcol).getTeam().equals("Black") && this.getTeam().equals("White")) || (board.getPiece(row-1, destcol).getTeam().equals("White") && this.getTeam().equals("Black"))){
 						//ENCOUNTER
 						if(board.encounter(fromrow, fromcol, row-1, destcol)){
-							board.move(fromrow, fromcol, row-1, destcol);
 							return true;
 						}
 					}
@@ -178,6 +174,13 @@ public class Queen extends ChessPiece {
 			}
 		}
 		System.out.println("Invalid move!");
+		return false;
+	}
+
+	@Override
+	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
