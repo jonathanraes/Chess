@@ -11,100 +11,34 @@ public class King extends ChessPiece {
 	
 	@Override
 	public boolean move(int fromrow, int fromcol, int destrow, int destcol) {
-		
-		if(destrow == fromrow && fromrow == destrow+1){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
+		if((destrow == fromrow && fromcol == destcol+1)|| //up
+				(destrow == fromrow && fromcol == destcol-1)|| //down
+				(destrow == fromrow+1 && fromcol == destcol)|| //right
+				(destrow == fromrow-1 && fromcol == destcol)|| //left
+				(destrow == fromrow-1 && fromcol == destcol+1)|| //up-left
+				(destrow == fromrow+1 && fromcol == destcol+1)|| //right-up
+				(destrow == fromrow+1 && fromcol == destcol-1)|| //right-down
+				(destrow == fromrow-1 && fromcol == destcol-1) //left-down
+				){
+			
+			if(board.getPiece(destrow, destcol) == null){
+				board.move(fromrow, fromcol, destrow, destcol);
+				return true;
 			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-		}
-		else if (destrow == fromrow && fromcol == destcol-1){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
+			else{
+				if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+					//encounter
+					board.encounter(fromrow, fromcol, destrow, destcol);
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-		}
-		else if(destrow == fromrow+1 && fromcol == destcol){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
-			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-
-		}
-		else if(destrow == fromrow-1 && fromcol == destcol){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
-			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-
-		}
-		else if(destrow == fromrow+1 && fromcol == destcol+1){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
-			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-
-		}else if(destrow == fromrow+1 && fromcol == destcol-1){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
-			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-
-		}
-		else if(destrow == fromrow-1 && fromcol == destcol-1){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
-			}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-
-		}
-		else if(destrow+1 == fromrow && fromcol+1 == destcol){
-			if(board.getPiece(destrow, destcol) != null){
-				//ENCOUNTER
-				board.encounter(fromrow, fromcol, destrow, destcol);
-
-			}
-			board.move(fromrow, fromcol, destrow, destcol);			
-			return true;
-
-		}
-		else if(destrow-1 == fromrow && fromcol-1 == destcol){
-			if(board.getPiece(destrow, destcol) != null){
-			//ENCOUNTER
-			board.encounter(fromrow, fromcol, destrow, destcol);
-
-		}
-			board.move(fromrow, fromcol, destrow, destcol);
-			return true;
-
-		}
-		else{
-			System.out.println("Invalid move!");
-		}
+ 		}
 		return false;
 	}
-	
+		
 	public String toString(){
 		return this.getName();
 	}
@@ -112,7 +46,29 @@ public class King extends ChessPiece {
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
 			int destcol) {
-		// TODO Auto-generated method stub
+		if((destrow == fromrow && fromcol == destcol+1)|| //up
+				(destrow == fromrow && fromcol == destcol-1)|| //down
+				(destrow == fromrow+1 && fromcol == destcol)|| //right
+				(destrow == fromrow-1 && fromcol == destcol)|| //left
+				(destrow == fromrow-1 && fromcol == destcol+1)|| //up-left
+				(destrow == fromrow+1 && fromcol == destcol+1)|| //right-up
+				(destrow == fromrow+1 && fromcol == destcol-1)|| //right-down
+				(destrow == fromrow-1 && fromcol == destcol-1) //left-down
+				){
+			
+			if(board.getPiece(destrow, destcol) == null){
+				return true;
+			}
+			else{
+				if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+					//encounter
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+ 		}
 		return false;
 	}
 }

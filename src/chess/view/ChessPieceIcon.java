@@ -94,55 +94,57 @@ public class ChessPieceIcon extends JLabel{
 		String absolutePath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 			if(piece instanceof Pawn){
 				if(piece.getTeam().equals("Black")){
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color2 + " P.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color2 + " P.png"));
 				}
 				else{
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color1 + " P.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color1 + " P.png"));
 				}
 				setIcon(ICON);
 			}
 			else if(piece instanceof Rook){
 				if(piece.getTeam().equals("Black")){
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color2 + " R.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color2 + " R.png"));				
+					
 				}
 				else{
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color1 + " R.png");
-				}
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color1 + " R.png"));				
+					}
 				setIcon(ICON);
 			}
 			else if(piece instanceof Knight){
 				if(piece.getTeam().equals("Black")){
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color2 + " N.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color2 + " N.png"));
 				}
 				else{
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color1 + " N.png");
-				}
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color1 + " N.png"));				
+					}
 				setIcon(ICON);
 			}
 			else if(piece instanceof Bishop){
 				if(piece.getTeam().equals("Black")){
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color2 + " B.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color2 + " B.png"));				
+				
 				}
 				else{
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color1 + " B.png");
-				}
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color1 + " B.png"));				
+					}
 				setIcon(ICON);
 			}
 			else if(piece instanceof King){
 				if(piece.getTeam().equals("Black")){
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color2 + " K.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color2 + " K.png"));				
 				}
 				else{
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color1 + " K.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color1 + " K.png"));				
 				}
 				setIcon(ICON);
 			}
 			else if(piece instanceof Queen){
 				if(piece.getTeam().equals("Black")){
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color2 + " Q.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color2 + " Q.png"));				
 				}
 				else{
-					ICON = new ImageIcon("C:/Users/Jonathan/git/Chess/src/Icons/" + color1 + " Q.png");
+					ICON = new ImageIcon(getClass().getClassLoader().getResource("Icons/" + color1 + " Q.png"));				
 				}
 				setIcon(ICON);
 			}

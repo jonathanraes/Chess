@@ -180,9 +180,214 @@ public class Queen extends ChessPiece {
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
 			int destcol) {
-		// TODO Auto-generated method stub
+		if(fromrow == destrow){ 
+			//vertical movement
+			if(destcol < fromcol){ //moving downwards
+				for(int col = fromcol; col > destcol; col--){
+					if(col-1 == destcol){
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							String selected = board.getSelectedPiece().getTeam();
+							String dest = board.getPiece(fromrow, destcol).getTeam();
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					else if(board.getPiece(destrow, col-1) == null){
+						
+					}
+					else{
+						//ENCOUNTER
+							return false;
+					}
+				}
+				return true;
+			}
+			else{ //moving upwards	
+				for(int col = fromcol; col < destcol; col++){
+					if(col+1 == destcol){
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							String selected = board.getSelectedPiece().getTeam();
+							String dest = board.getPiece(fromrow, destcol).getTeam();
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					else if(board.getPiece(destrow, col+1) == null){
+						
+					}
+					else {
+						//ENCOUNTER
+						return false;
+					}
+				}
+				return true;
+				
+			}
+		}
+		else if(fromcol == destcol){ 
+			//horizontal movement
+			if(fromrow < destrow){ //moving to the right
+				for(int row = fromrow; row < destrow; row++){
+					if(row+1 == destrow){
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					else if(board.getPiece(row+1, destcol) == null){
+						
+					}
+					else {
+						//ENCOUNTER
+							return false;
+					}
+				}
+				return true;
+			}
+			else{ //moving to the left
+				for(int row = fromrow; row > destrow; row--){
+					if(row-1 == destrow){
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					if(board.getPiece(row-1, destcol) == null){
+						
+					}
+					else {
+						//ENCOUNTER
+							return false;
+					}
+				}
+				return true;
+			}
+		}
+		else if(Math.abs(( (double)destcol - (double)fromcol)/((double)destrow-(double)fromrow)) == 1.0){
+			try{
+			if(destrow-fromrow > 0 && destcol - fromcol > 0){ //up right
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(fromrow + i == destrow && fromcol + i == destcol){ 
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					else if(board.getPiece(fromrow+i, fromcol+i) == null){
+						
+					}
+					else {
+						//ENCOUNTER
+						return false;
+					}
+				}
+				return true;
+			}
+			else if(destrow - fromrow < 0 && destcol - fromcol > 0){ //up left
+					for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+						if(fromrow - i == destrow && fromcol + i == destcol){ 
+							if(board.getPiece(destrow, destcol) == null){
+								return true;
+							}
+							else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+								return true;
+							}
+							else{
+								return false;
+							}
+						}
+						else if(board.getPiece(fromrow-i, fromcol+i) == null){
+							
+						}
+						else {
+							//ENCOUNTER
+							return false;
+						}
+					}
+				return true;
+			}
+			else if(destrow-fromrow < 0 && destcol - fromcol < 0){ //down left
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(fromrow - i == destrow && fromcol - i == destcol){ 
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					else if(board.getPiece(fromrow-i, fromcol-i) == null){
+						
+					}
+					else {
+						//ENCOUNTER
+						return false;
+					}
+				}
+			return true;
+			}
+			else if(destrow-fromrow > 0 && destcol - fromcol < 0){ //down right
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(fromrow + i == destrow && fromcol - i == destcol){ 
+						if(board.getPiece(destrow, destcol) == null){
+							return true;
+						}
+						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					else if(board.getPiece(fromrow+i, fromcol-i) == null){
+						
+					}
+					else {
+						//ENCOUNTER
+						return false;
+					}
+				}
+			return true;
+		}
+		System.err.println("ERROR CHECK BISHOP");
 		return false;
+		}
+		catch(ArithmeticException e){
+			return false;
+		}
+		catch(NumberFormatException e){
+			System.out.println("NFE QUEEN");
+			return false;
+		}
 	}
-
-	
+	return false;
+	}
 }

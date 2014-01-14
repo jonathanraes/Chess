@@ -2,15 +2,19 @@ package chess.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 import chess.controller.Controller;
 import chess.model.ChessBoard;
@@ -263,7 +269,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
 							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								tile.setBackground(Color.green);
+								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -271,7 +277,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else if(!check){
+					else{
 						tile.setBackground( count % 2 == 0 ? Color.black : Color.white );
 					}
 				}
@@ -279,7 +285,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
 							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								tile.setBackground(Color.green);
+								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -287,7 +293,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else if(!check){
+					else {
 						tile.setBackground( count % 2 == 0 ? Color.white : Color.black );
 					}
 				}
