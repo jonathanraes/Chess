@@ -205,9 +205,7 @@ public class ChessBoard extends Observable{
 			return true;
 		}
 			move(fromrow, fromcol, destrow, destcol);
-			board[fromrow][fromcol] = null;
-			setChanged();
-			notifyObservers();
+			setSelectedPiece(null);
 			return true;
 		}
 		
