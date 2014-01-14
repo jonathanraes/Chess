@@ -78,7 +78,7 @@ public class Controller extends MouseAdapter implements ActionListener{
 								board.setChangedandNotify();
 								mainframe.setSelctedPiecePaneText("No selected piece");
 								board.changeTurn();
-								mainframe.setPaneText(board.getTurn() + "'s turn!");
+								mainframe.setPaneText(board.getTurn());
 								return;
 							}
 							else{
@@ -101,7 +101,7 @@ public class Controller extends MouseAdapter implements ActionListener{
 							board.setChangedandNotify();
 							mainframe.setSelctedPiecePaneText("No selected piece");
 							board.changeTurn();
-							mainframe.setPaneText(board.getTurn() + "'s turn!");
+							mainframe.setPaneText(board.getTurn());
 							return;
 						}
 						else{
@@ -125,20 +125,26 @@ public class Controller extends MouseAdapter implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("New Game")){
 			board.endGame();
-			mainframe.setPaneText("White's Turn");
+			mainframe.setPaneText(board.getTurn());
 		}
 		if(e.getActionCommand().equals("Exit")){
 			System.exit(0);
 		}
 		if(e.getActionCommand().equals("Color Settings")){
-			mainframe.colorSettingMenu();
+			if(mainframe.getCSettingsOpened()){
+				mainframe.openColorSettings();
+			}else{
+				mainframe.colorSettingMenu();
+				mainframe.setCSettingsOpened(true);
+			}
 		}
 		if(e.getActionCommand().equals("OK")){
 			mainframe.closeColorSettings();
+			mainframe.setPaneText(board.getTurn());
 		}
 		if(e.getSource() instanceof JRadioButton){
 			JRadioButton f = (JRadioButton) e.getSource();
-			cs = board.getColorSetting();
+			cs = ChessBoard.getColorSetting();
 			byte t1 = cs[0];
 			byte t2 = cs[1];
 			String actioncommand = f.getName();

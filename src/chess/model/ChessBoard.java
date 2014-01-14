@@ -1,21 +1,17 @@
 package chess.model;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
 
-import chess.model.King;
-import chess.model.Knight;
-import chess.model.Pawn;
-import chess.model.Queen;
-import chess.model.Rook;
-
 public class ChessBoard extends Observable{
 	public ChessPiece[][] board = new ChessPiece[8][8];
+	private ArrayList<ChessPiece> fallenPieces;
 	public String turn = "White";
 	public boolean play = true;
 	public ChessPiece selectedPiece;
 	public static byte[] colorsetting = {0,1};
-	/**
+	/*
 	 * 0 = WHITE
 	 * 1 = BLACK
 	 * 2 = BLUE
@@ -33,6 +29,10 @@ public class ChessBoard extends Observable{
 				board[a][b] = null;
 			}
 		}
+	}
+	
+	public void addFallenPiece(ChessPiece piece){
+		fallenPieces.add(piece);
 	}
 	
 	public void initializeBoard(){

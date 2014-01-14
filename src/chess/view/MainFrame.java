@@ -48,6 +48,8 @@ public class MainFrame extends JFrame implements Observer{
 	private ChessBoard board;
 	JFrame csettingframe;
 	
+	boolean csettingsopened = false;
+	
 	public MainFrame(String title, ChessBoard board) throws HeadlessException {
 		super(title);
 		this.board = board;
@@ -60,7 +62,7 @@ public class MainFrame extends JFrame implements Observer{
 		informationpane.setEditable(false);
 		selectedpiecepane.setEditable(false);
 //		informationpane.setSize(50, 100);
-		setPaneText(board.getTurn() + "'s turn!");
+		setPaneText(board.getTurn());
 		setSelctedPiecePaneText("No selected Piece");
 		controller = new Controller(board, this);
 		mousecontroller = new Controller(board, this);
@@ -225,6 +227,18 @@ public class MainFrame extends JFrame implements Observer{
 	
 	}
 	
+	public void openColorSettings(){
+		csettingframe.setVisible(true);
+	}
+	
+	public boolean getCSettingsOpened(){
+		return csettingsopened;
+	}
+	
+	public void setCSettingsOpened(boolean b){
+		csettingsopened = b;
+	}
+	
 	public void createMenubar(){
 		menu = new JMenuBar();
 		setJMenuBar(menu);
@@ -306,10 +320,51 @@ public class MainFrame extends JFrame implements Observer{
 			add(panel);
 			setVisible(true);
 	}
+	
+	/**
+	 * 0 = WHITE
+	 * 1 = BLACK
+	 * 2 = BLUE
+	 * 3 = BROWN
+	 * 4 = GREEN
+	 * 5 = RED
+	 * 6 = VIOLET
+	 * 7 = YELLOW
+	 */
 	public void setPaneText(String text){
 		Font font1 = new Font("Trebuchet MS", Font.PLAIN, 19);
+		byte[] color = board.getColorSetting();
+		String turn ="";
+		switch (text.equals("White") ? color[0] : color[1]) {
+			case 0:
+				turn = "White";
+				break;
+			case 1:
+				turn = "Black";
+				break;
+			case 2: 
+				turn = "Blue";
+				break;
+			case 3:
+				turn = "Brown";
+				break;
+			case 4:
+				turn = "Green";
+				break;
+			case 5:
+				turn = "Red";
+				break;
+			case 6:
+				turn = "Violet";
+				break;
+			case 7:
+				turn = "Yellow";
+				break;
+			default:
+				break;
+			}
 		informationpane.setFont(font1);
-		informationpane.setText(text);
+		informationpane.setText(turn + "'s turn!");
 	}
 	
 	public void setSelctedPiecePaneText(String text){
