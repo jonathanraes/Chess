@@ -283,7 +283,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
 							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+								tile.setBorder(BorderFactory.createLineBorder(Color.red, 5));
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -299,7 +299,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
 							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+								tile.setBorder(BorderFactory.createLineBorder(Color.red, 5));
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
