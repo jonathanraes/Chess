@@ -2,13 +2,13 @@ package chess.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.Observable;
@@ -26,13 +26,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 
 import chess.controller.Controller;
 import chess.model.ChessBoard;
 import chess.model.ChessPiece;
-import chess.model.Pawn;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements Observer{
@@ -47,6 +44,11 @@ public class MainFrame extends JFrame implements Observer{
 	MouseListener mousecontroller;
 	private ChessBoard board;
 	JFrame csettingframe;
+	JPanel team1panel;
+	JPanel team2panel;
+	GridBagConstraints CONTRAINTS;
+	JPanel containerPanel;
+	JTextPane checkpane;
 	
 	boolean csettingsopened = false;
 	
@@ -56,9 +58,12 @@ public class MainFrame extends JFrame implements Observer{
 		informationpanel = new JPanel();
 		informationpane = new JTextPane();
 		selectedpiecepane = new JTextPane();
-		informationpanel.setLayout(new GridLayout(1,2));
+		checkpane = new JTextPane();
+		
+		informationpanel.setLayout(new GridLayout(1,3));
 		informationpanel.add(informationpane);
 		informationpanel.add(selectedpiecepane);
+		informationpanel.add(checkpane);
 		informationpane.setEditable(false);
 		selectedpiecepane.setEditable(false);
 //		informationpane.setSize(50, 100);
@@ -68,8 +73,17 @@ public class MainFrame extends JFrame implements Observer{
 		mousecontroller = new Controller(board, this);
 		panel.setLayout(new GridLayout(8,8));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800,800);
+		setSize(1150,800);
 		//setResizable(false);
+		
+		containerPanel = new JPanel(new GridBagLayout());
+		//containerPanel.setLayout(new FlowLayout());
+		JPanel fallenPiecesPanel = new JPanel();
+		team1panel = new JPanel(new GridLayout(4,4));
+		team2panel = new JPanel(new GridLayout(4,4));
+		fallenPiecesPanel.setLayout(new GridLayout(2,1));
+		fallenPiecesPanel.add(team1panel);
+		fallenPiecesPanel.add(team2panel);
 		
 		createMenubar();
 	
@@ -93,23 +107,43 @@ public class MainFrame extends JFrame implements Observer{
 					count++;
 				}
 			}
+			//panel.setSize(800, 800);
 			setLayout(new BorderLayout());
-		add(informationpanel, BorderLayout.NORTH);
-		add(panel);
-		setVisible(true);
+			//panel.setMinimumSize(new Dimension(1000, 1000));
+			CONTRAINTS = new GridBagConstraints();
+			CONTRAINTS.fill = GridBagConstraints.BOTH;
+			CONTRAINTS.anchor = GridBagConstraints.PAGE_START;
+			//CONTRAINTS.gridwidth = 3;
+			containerPanel.add(informationpanel, CONTRAINTS);
+			CONTRAINTS.weighty = 1;
+			CONTRAINTS.weightx = 0.65;
+			CONTRAINTS.gridy = 1;
+			containerPanel.add(panel, CONTRAINTS);
+			CONTRAINTS.gridx = 4;
+			//CONTRAINTS.gridwidth = GridBagConstraints.RELATIVE;
+			CONTRAINTS.weightx = 0.5;
+			containerPanel.add(fallenPiecesPanel, CONTRAINTS);
+			add(containerPanel, BorderLayout.CENTER);
+			CONTRAINTS.gridx = 0;
+			CONTRAINTS.gridy = 1;
+			CONTRAINTS.gridwidth = 1;
+			CONTRAINTS.weighty = 1;
+			CONTRAINTS.weightx = 0.65;
+			fallenPiecesPanel.setBackground(Color.red);
+		//	add(fallenPiecesPanel);
 	}
 	public void colorSettingMenu(){
 		csettingframe = new JFrame("Color Settings");
 		JPanel cpanel = new JPanel(new BorderLayout());
 		JPanel team1 = new JPanel();
-				team1.setLayout(new BoxLayout(team1, BoxLayout.Y_AXIS));
+		team1.setLayout(new BoxLayout(team1, BoxLayout.Y_AXIS));
 		JPanel team2 = new JPanel();
-				team2.setLayout(new BoxLayout(team2, BoxLayout.Y_AXIS));
+		team2.setLayout(new BoxLayout(team2, BoxLayout.Y_AXIS));
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
 		JButton okbutton = new JButton("OK");
 		okbutton.addActionListener(controller);
-		
-		
+
+
 		JRadioButton color0 = new JRadioButton("White");
 		color0.setName("team1white");
 		color0.setSelected(true);
@@ -257,6 +291,15 @@ public class MainFrame extends JFrame implements Observer{
 	}
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		if(board.attack){
+			ChessPieceIcon fallenPiece = new ChessPieceIcon(board.dieingPiece);
+			if(board.dieingPiece.getTeam().equals("White")){
+				team2panel.add(fallenPiece);
+			}
+			else{
+				team1panel.add(fallenPiece);
+			}
+		}
 		ChessPiece selected = board.getSelectedPiece();
 		int[] selectedpiecetile = {0,0};
 		for(int i = 0; i < 8; i++){
@@ -283,7 +326,8 @@ public class MainFrame extends JFrame implements Observer{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
 							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+								//tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -291,7 +335,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else{
+					else if(!check){
 						tile.setBackground( count % 2 == 0 ? Color.black : Color.white );
 					}
 				}
@@ -299,7 +343,8 @@ public class MainFrame extends JFrame implements Observer{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
 							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+							//	tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -307,7 +352,7 @@ public class MainFrame extends JFrame implements Observer{
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else {
+					else if(!check){
 						tile.setBackground( count % 2 == 0 ? Color.white : Color.black );
 					}
 				}
@@ -317,8 +362,12 @@ public class MainFrame extends JFrame implements Observer{
 				count++;
 			}
 		}
-			add(panel);
-			setVisible(true);
+		
+		containerPanel.add(panel, CONTRAINTS);
+		
+		setCheckPane(board.checkForCheck());
+		setVisible(true);
+			
 	}
 	
 	/**
@@ -365,6 +414,15 @@ public class MainFrame extends JFrame implements Observer{
 			}
 		informationpane.setFont(font1);
 		informationpane.setText(turn + "'s turn!");
+	}
+	
+	public void setCheckPane(boolean check){
+		if(check){
+			checkpane.setText("Check!");
+		}
+		else{
+			checkpane.setText("");
+		}
 	}
 	
 	public void setSelctedPiecePaneText(String text){

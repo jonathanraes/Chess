@@ -38,11 +38,17 @@ public class King extends ChessPiece {
 				){
 			
 			if(board.getPiece(destrow, destcol) == null){
+				if(board.canAnyoneHit(destrow, destcol, getTeam())){
+					return false;
+				}
 				return true;
 			}
 			else{
 				if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 					//encounter
+					if(board.canAnyoneHit(destrow, destcol, getTeam())){
+						return false;
+					}
 					return true;
 				}
 				else{

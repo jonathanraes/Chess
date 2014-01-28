@@ -31,7 +31,7 @@ ChessBoard board;
 							if(board.getPiece(destrow, destcol) == null){
 								return true;
 							}
-							else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 								return true;
 							}
 							else{
@@ -54,7 +54,7 @@ ChessBoard board;
 								if(board.getPiece(destrow, destcol) == null){
 									return true;
 								}
-								else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+								else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 									return true;
 								}
 								else{
@@ -77,7 +77,7 @@ ChessBoard board;
 							if(board.getPiece(destrow, destcol) == null){
 								return true;
 							}
-							else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 								return true;
 							}
 							else{
@@ -100,7 +100,7 @@ ChessBoard board;
 							if(board.getPiece(destrow, destcol) == null){
 								return true;
 							}
-							else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 								return true;
 							}
 							else{

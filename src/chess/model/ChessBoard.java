@@ -11,6 +11,10 @@ public class ChessBoard extends Observable{
 	public boolean play = true;
 	public ChessPiece selectedPiece;
 	public static byte[] colorsetting = {0,1};
+	public boolean attack = false;
+	public ChessPiece dieingPiece;
+	King blackking;
+	King whiteking;
 	/*
 	 * 0 = WHITE
 	 * 1 = BLACK
@@ -36,7 +40,7 @@ public class ChessBoard extends Observable{
 	}
 	
 	public void initializeBoard(){
-		King blackking = new King("King","Black", this);
+		blackking = new King("King","Black", this);
 		Queen blackqueen = new Queen("Queen","Black", this);
 		Rook blackrook0 = new Rook("Rook","Black", this);
 		Rook blackrook1 = new Rook("Rook","Black", this);
@@ -55,7 +59,7 @@ public class ChessBoard extends Observable{
 		Pawn blackpawn7 = new Pawn("Pawn","Black", this);
 		
 		
-		King whiteking = new King("King","White", this);
+		whiteking = new King("King","White", this);
 		Queen whitequeen = new Queen("Queen","White", this);
 		Rook whiterook0 = new Rook("Rook","White", this);
 		Rook whiterook1 = new Rook("Rook","White", this);
@@ -110,6 +114,13 @@ public class ChessBoard extends Observable{
 	}
 	
 	public void move(int fromrow, int fromcol, int destrow, int destcol){
+		if(board[destrow][destcol] != null){
+			attack = true;
+			dieingPiece = board[destrow][destcol];
+			setChanged();
+			notifyObservers();
+			attack = false;
+		}
 		board[destrow][destcol] = board[fromrow][fromcol];
 		board[fromrow][fromcol] = null;
 		setSelectedPiece(null);
@@ -261,5 +272,76 @@ public class ChessBoard extends Observable{
 		return;
 	}
 	
-}
+	public ChessPiece getDieingPiece(){
+		return dieingPiece;
+	}
 	
+	public boolean checkForCheck(){
+		King whiteKing;
+		King blackKing;
+		int[] whiteKingLoc = {0,0};
+		int[] blackKingLoc = {0,0};
+		for(int row = 0; row < 8; row++){
+			for(int col = 0; col < 8; col++){
+				if(board[row][col] == whiteking){
+					whiteKingLoc[0] = row;
+					whiteKingLoc[1] = col;
+					whiteKing = (King)board[row][col];
+				}
+				if(board[row][col] == blackking){
+					blackKingLoc[0] = row;
+					blackKingLoc[1] = col;
+					blackKing = (King)board[row][col];
+				}
+			}
+		}
+		
+		for(int row = 0; row < 8; row++){
+			for(int col = 0; col < 8; col++){
+				if(board[row][col] != null){
+					if(board[row][col].getTeam().equals("White")){
+						if(board[row][col].isPossibleMove(row, col, blackKingLoc[0], blackKingLoc[1])){
+							return true;
+						}
+					}else{
+						if(board[row][col].isPossibleMove(row, col, whiteKingLoc[0], whiteKingLoc[1])){
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkIfPieceCanHit(ChessPiece piece, int destrow, int destcol){
+		for(int row = 0; row < 8; row++){
+			for(int col = 0; col < 8; col++){
+				if(board[row][col] == piece){
+					if(piece.isPossibleMove(row, col, destrow, destcol)){
+						return true;
+					}
+					else{
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean canAnyoneHit(int row, int col, String team){
+		for(int rows = 0; rows < 8; rows++){
+			for(int cols = 0; cols < 8; cols++){
+				if(board[rows][cols] != null){
+					if(board[rows][cols] instanceof King){
+					}
+					else if(getPiece(rows, cols).isPossibleMove(rows, cols, row, col) && !getPiece(rows, cols).getTeam().equals(team)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+}

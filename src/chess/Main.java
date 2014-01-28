@@ -14,7 +14,7 @@ public class Main {
 		Controller controller = new Controller(board, mainframe);
 		
 		board.addObserver(mainframe); 
-		
+		mainframe.setVisible(true);
 		Scanner sc = new Scanner(System.in);
 		do{
 			board.drawBoard();

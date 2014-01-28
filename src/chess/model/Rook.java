@@ -29,8 +29,8 @@ public class Rook extends ChessPiece {
 						if(board.getPiece(destrow, destcol) == null){
 							return true;
 						}
-						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							String selected = board.getSelectedPiece().getTeam();
+						else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							String selected = board.getPiece(fromrow,fromcol).getTeam();
 							String dest = board.getPiece(fromrow, destcol).getTeam();
 							return true;
 						}
@@ -54,8 +54,8 @@ public class Rook extends ChessPiece {
 						if(board.getPiece(destrow, destcol) == null){
 							return true;
 						}
-						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							String selected = board.getSelectedPiece().getTeam();
+						else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+							String selected = board.getPiece(fromrow,fromcol).getTeam();
 							String dest = board.getPiece(fromrow, destcol).getTeam();
 							return true;
 						}
@@ -83,7 +83,7 @@ public class Rook extends ChessPiece {
 						if(board.getPiece(destrow, destcol) == null){
 							return true;
 						}
-						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+						else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 							return true;
 						}
 						else{
@@ -106,7 +106,7 @@ public class Rook extends ChessPiece {
 						if(board.getPiece(destrow, destcol) == null){
 							return true;
 						}
-						else if(!board.getSelectedPiece().getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
+						else if(!board.getPiece(fromrow,fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 							return true;
 						}
 						else{
