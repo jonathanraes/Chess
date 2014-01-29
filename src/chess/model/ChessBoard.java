@@ -276,9 +276,7 @@ public class ChessBoard extends Observable{
 		return dieingPiece;
 	}
 	
-	public boolean checkForCheck(){
-		King whiteKing;
-		King blackKing;
+	public String checkForCheck(){
 		int[] whiteKingLoc = {0,0};
 		int[] blackKingLoc = {0,0};
 		for(int row = 0; row < 8; row++){
@@ -286,12 +284,10 @@ public class ChessBoard extends Observable{
 				if(board[row][col] == whiteking){
 					whiteKingLoc[0] = row;
 					whiteKingLoc[1] = col;
-					whiteKing = (King)board[row][col];
 				}
 				if(board[row][col] == blackking){
 					blackKingLoc[0] = row;
 					blackKingLoc[1] = col;
-					blackKing = (King)board[row][col];
 				}
 			}
 		}
@@ -301,17 +297,17 @@ public class ChessBoard extends Observable{
 				if(board[row][col] != null){
 					if(board[row][col].getTeam().equals("White")){
 						if(board[row][col].isPossibleMove(row, col, blackKingLoc[0], blackKingLoc[1])){
-							return true;
+							return "Black";
 						}
 					}else{
 						if(board[row][col].isPossibleMove(row, col, whiteKingLoc[0], whiteKingLoc[1])){
-							return true;
+							return "White";
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return "";
 	}
 	
 	public boolean checkIfPieceCanHit(ChessPiece piece, int destrow, int destcol){
@@ -341,6 +337,43 @@ public class ChessBoard extends Observable{
 					}
 				}
 			}
+		}
+		return false;
+	}
+	
+	public boolean checkForCheckMate(String team){
+		int[] whiteKingLoc = {0,0};
+		int[] blackKingLoc = {0,0};
+		int possibleMoves = 0;
+		for(int row = 0; row < 8; row++){
+			for(int col = 0; col < 8; col++){
+				if(board[row][col] == whiteking){
+					whiteKingLoc[0] = row;
+					whiteKingLoc[1] = col;
+				}
+				if(board[row][col] == blackking){
+					blackKingLoc[0] = row;
+					blackKingLoc[1] = col;
+				}
+			}
+		}
+		
+		for(int row = 0; row < 8; row++){
+			for(int col = 0; col < 8; col++){
+				if(team.equals("Black")){
+					if(blackking.isPossibleMove(blackKingLoc[0], blackKingLoc[1], row, col)){
+						possibleMoves++;
+					}
+				}
+				else{
+					if(whiteking.isPossibleMove(whiteKingLoc[0], whiteKingLoc[1], row, col)){
+						possibleMoves++;
+					}
+				}
+			}
+		}
+		if(possibleMoves == 0){
+			return true;
 		}
 		return false;
 	}

@@ -2,11 +2,9 @@ package chess.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
@@ -14,7 +12,6 @@ import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -26,6 +23,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 import chess.controller.Controller;
 import chess.model.ChessBoard;
@@ -66,21 +67,19 @@ public class MainFrame extends JFrame implements Observer{
 		informationpanel.add(checkpane);
 		informationpane.setEditable(false);
 		selectedpiecepane.setEditable(false);
-//		informationpane.setSize(50, 100);
 		setPaneText(board.getTurn());
 		setSelctedPiecePaneText("No selected Piece");
 		controller = new Controller(board, this);
 		mousecontroller = new Controller(board, this);
 		panel.setLayout(new GridLayout(8,8));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1150,800);
-		//setResizable(false);
-		
-		containerPanel = new JPanel(new GridBagLayout());
-		//containerPanel.setLayout(new FlowLayout());
+		setSize(970,828);
+		setResizable(false);
+		containerPanel = new JPanel();
+		containerPanel.setLayout(null);
 		JPanel fallenPiecesPanel = new JPanel();
-		team1panel = new JPanel(new GridLayout(4,4));
-		team2panel = new JPanel(new GridLayout(4,4));
+		team1panel = new JPanel(new GridLayout(5,3));
+		team2panel = new JPanel(new GridLayout(5,3));
 		fallenPiecesPanel.setLayout(new GridLayout(2,1));
 		fallenPiecesPanel.add(team1panel);
 		fallenPiecesPanel.add(team2panel);
@@ -107,30 +106,13 @@ public class MainFrame extends JFrame implements Observer{
 					count++;
 				}
 			}
-			//panel.setSize(800, 800);
 			setLayout(new BorderLayout());
-			//panel.setMinimumSize(new Dimension(1000, 1000));
-			CONTRAINTS = new GridBagConstraints();
-			CONTRAINTS.fill = GridBagConstraints.BOTH;
-			CONTRAINTS.anchor = GridBagConstraints.PAGE_START;
-			//CONTRAINTS.gridwidth = 3;
-			containerPanel.add(informationpanel, CONTRAINTS);
-			CONTRAINTS.weighty = 1;
-			CONTRAINTS.weightx = 0.65;
-			CONTRAINTS.gridy = 1;
-			containerPanel.add(panel, CONTRAINTS);
-			CONTRAINTS.gridx = 4;
-			//CONTRAINTS.gridwidth = GridBagConstraints.RELATIVE;
-			CONTRAINTS.weightx = 0.5;
-			containerPanel.add(fallenPiecesPanel, CONTRAINTS);
+			add(informationpanel, BorderLayout.NORTH);
+			panel.setBounds(0, 0, 800, 750);
+			containerPanel.add(panel);
+			fallenPiecesPanel.setBounds(800, 0, 170, 750);
+			containerPanel.add(fallenPiecesPanel);
 			add(containerPanel, BorderLayout.CENTER);
-			CONTRAINTS.gridx = 0;
-			CONTRAINTS.gridy = 1;
-			CONTRAINTS.gridwidth = 1;
-			CONTRAINTS.weighty = 1;
-			CONTRAINTS.weightx = 0.65;
-			fallenPiecesPanel.setBackground(Color.red);
-		//	add(fallenPiecesPanel);
 	}
 	public void colorSettingMenu(){
 		csettingframe = new JFrame("Color Settings");
@@ -364,10 +346,22 @@ public class MainFrame extends JFrame implements Observer{
 		}
 		
 		containerPanel.add(panel, CONTRAINTS);
-		
-		setCheckPane(board.checkForCheck());
+		String check = board.checkForCheck();
+		if(!check.equals("")){
+			if(board.checkForCheckMate(check)){
+				endGame();
+			}
+			setCheckPane(true);
+		}
+		else{
+			setCheckPane(false);
+		}
 		setVisible(true);
 			
+	}
+	
+	public void endGame(){
+		System.out.println("CHECKMATE!!");
 	}
 	
 	/**
@@ -417,6 +411,13 @@ public class MainFrame extends JFrame implements Observer{
 	}
 	
 	public void setCheckPane(boolean check){
+		Font newFont = new Font(Font.SERIF, Font.PLAIN, 19);
+		checkpane.setFont(newFont);
+		StyleContext sc = StyleContext.getDefaultStyleContext();
+		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
+		aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+		aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+		checkpane.setCharacterAttributes(aset, true);
 		if(check){
 			checkpane.setText("Check!");
 		}
