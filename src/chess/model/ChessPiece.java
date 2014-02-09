@@ -21,4 +21,6 @@ public abstract class ChessPiece {
 	public abstract boolean move(int fromrow, int fromcol, int destrow, int destcol);
 	
 	public abstract boolean isPossibleMove(int fromrow, int fromcol, int destrow, int destcol);
+	
+	public abstract boolean isPossibleCheckMove(int fromrow, int fromcol, int destrow, int destcol);
 }

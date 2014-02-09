@@ -9,9 +9,11 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -31,6 +33,7 @@ import javax.swing.text.StyleContext;
 import chess.controller.Controller;
 import chess.model.ChessBoard;
 import chess.model.ChessPiece;
+import chess.model.King;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements Observer{
@@ -273,6 +276,17 @@ public class MainFrame extends JFrame implements Observer{
 	}
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		String ischeck = board.checkForCheck();
+		board.setCheck(ischeck);
+		if(!ischeck.equals("")){
+			if(board.checkForCheckMate(ischeck)){
+				endGame();
+			}
+			setCheckPane(true);
+		}
+		else{
+			setCheckPane(false);
+		}
 		if(board.attack){
 			ChessPieceIcon fallenPiece = new ChessPieceIcon(board.dieingPiece);
 			if(board.dieingPiece.getTeam().equals("White")){
@@ -291,10 +305,10 @@ public class MainFrame extends JFrame implements Observer{
 					selectedpiecetile[1] = i;
 					System.out.println("Setting Selected Piece tile: \nselectedpiecetile[0]= " + col + "\nselectedpiecetile[1]= " + i);
 				}
-				
 			}
 		}
 		panel.removeAll();
+		ArrayList<Integer> tileslist = board.getMarkedList();
 		int count = 0;
 		for(int i = 0; i < 8; i++){
 			for(int col = 0; col < 8; col++){
@@ -307,9 +321,9 @@ public class MainFrame extends JFrame implements Observer{
 				if (row == 0){
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
-							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-								//tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
-								tile.setBackground(Color.red);
+							if(ischeck.equals("") ? piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i) : piece.isPossibleCheckMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+//								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -317,16 +331,25 @@ public class MainFrame extends JFrame implements Observer{
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else if(!check){
+					else /*if(!check)*/{
 						tile.setBackground( count % 2 == 0 ? Color.black : Color.white );
 					}
+					//// 
+					for(int j = 0; j < tileslist.size(); j++){
+						if(j % 2 == 0){
+							if(tileslist.get(j) == col && tileslist.get(j+1) == i){
+								tile.setBackground(Color.pink);
+							}
+						}
+					}
+					////
 				}
 				else{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
-							if(piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
-							//	tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
-								tile.setBackground(Color.red);
+						if(ischeck.equals("") ? piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i) : piece.isPossibleCheckMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
+//								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
 								check = true;
 							}
@@ -334,9 +357,18 @@ public class MainFrame extends JFrame implements Observer{
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
 						tile.setBackground(Color.blue);
 					}
-					else if(!check){
+					else /*if(!check)*/{
 						tile.setBackground( count % 2 == 0 ? Color.white : Color.black );
 					}
+					//// 
+					for(int j = 0; j < tileslist.size(); j++){
+						if(j % 2 == 0){
+							if(tileslist.get(j) == col && tileslist.get(j+1) == i){
+								tile.setBackground(Color.pink);
+							}
+						}
+					}
+					////
 				}
 				tile.add(pieces, BorderLayout.CENTER);
 				tile.addMouseListener(mousecontroller);
@@ -344,21 +376,10 @@ public class MainFrame extends JFrame implements Observer{
 				count++;
 			}
 		}
-		
+		board.clearMarkedList();
 		containerPanel.add(panel, CONTRAINTS);
-		String check = board.checkForCheck();
-		if(!check.equals("")){
-			if(board.checkForCheckMate(check)){
-				endGame();
-			}
-			setCheckPane(true);
-		}
-		else{
-			setCheckPane(false);
-		}
 		setVisible(true);
-			
-	}
+	}			
 	
 	public void endGame(){
 		System.out.println("CHECKMATE!!");

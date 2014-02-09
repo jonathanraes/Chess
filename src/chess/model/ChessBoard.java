@@ -15,6 +15,8 @@ public class ChessBoard extends Observable{
 	public ChessPiece dieingPiece;
 	King blackking;
 	King whiteking;
+	ArrayList<Integer> markedtiles = new ArrayList<>();
+	private static String check ="";
 	/*
 	 * 0 = WHITE
 	 * 1 = BLACK
@@ -291,16 +293,18 @@ public class ChessBoard extends Observable{
 				}
 			}
 		}
-		
 		for(int row = 0; row < 8; row++){
 			for(int col = 0; col < 8; col++){
 				if(board[row][col] != null){
 					if(board[row][col].getTeam().equals("White")){
 						if(board[row][col].isPossibleMove(row, col, blackKingLoc[0], blackKingLoc[1])){
+							markTiles(row, col, blackKingLoc[0], blackKingLoc[1]);
+							
 							return "Black";
 						}
 					}else{
 						if(board[row][col].isPossibleMove(row, col, whiteKingLoc[0], whiteKingLoc[1])){
+							markTiles(row, col, whiteKingLoc[0], whiteKingLoc[1]);
 							return "White";
 						}
 					}
@@ -308,6 +312,100 @@ public class ChessBoard extends Observable{
 			}
 		}
 		return "";
+	}
+	
+	
+	
+	public ArrayList<Integer> getMarkedList(){
+		return markedtiles;
+	}
+	
+	public void clearMarkedList(){
+		markedtiles.clear();
+	}
+	
+	public void markTiles(int fromrow, int fromcol, int destrow, int destcol){
+		if((fromrow +1 == destrow && fromcol + 2 == destcol) ||//up up right
+				(fromrow - 1 == destrow && fromcol + 2 == destcol)|| //up up left
+				(fromrow + 2 == destrow && fromcol + 1 == destcol)|| //left-left-up
+				(fromrow + 2 == destrow && fromcol - 1 == destcol)|| //left-left-down
+				(fromrow + 1 == destrow && fromcol - 2 == destcol)|| //down-down-left
+				(fromrow - 1 == destrow && fromcol - 2 == destcol)|| //down-down-right
+				(fromrow - 2 == destrow && fromcol + 1 == destcol)|| //right-right-up
+				(fromrow - 2 == destrow && fromcol - 1 == destcol)){ //right-right-down
+			markedtiles.add(fromrow);
+			markedtiles.add(fromcol);
+		}
+		if(fromrow == destrow){ 
+			//vertical movement
+			if(destcol < fromcol){ //moving downwards
+				for(int col = fromcol; col > destcol; col--){
+					markedtiles.add(fromrow);
+					markedtiles.add(col);
+				}
+			}else{ //moving upwards	
+				for(int col = fromcol; col < destcol; col++){
+					markedtiles.add(fromrow);
+					markedtiles.add(col);
+				}
+			}
+		}
+		else if(fromcol == destcol){ 
+			//horizontal movement
+			if(fromrow < destrow){ //moving to the right
+				for(int row = fromrow; row < destrow; row++){
+					markedtiles.add(row);
+					markedtiles.add(fromcol);
+				}
+			}
+			else{ //moving to the left
+				for(int row = fromrow; row > destrow; row--){
+					markedtiles.add(row);
+					markedtiles.add(fromcol);
+				}
+			}
+		}
+		else if(Math.abs(( (double)destcol - (double)fromcol)/((double)destrow-(double)fromrow)) == 1.0){
+			try{
+				markedtiles.add(fromrow);
+				markedtiles.add(fromcol);
+			if(destrow-fromrow > 0 && destcol - fromcol > 0){ //up right
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(!(fromrow + i == destrow) && !(fromcol + i == destcol)){
+						markedtiles.add(fromrow+i);
+						markedtiles.add(fromcol+i);
+					}
+				}
+			}
+			else if(destrow - fromrow < 0 && destcol - fromcol > 0){ //up left
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(!(fromrow - i == destrow) && !(fromcol + i == destcol)){
+						markedtiles.add(fromrow-i);
+						markedtiles.add(fromcol+i);
+					}
+				}
+			}
+			else if(destrow-fromrow < 0 && destcol - fromcol < 0){ //down left
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(!(fromrow - i == destrow) && !(fromcol - i == destcol)){
+						markedtiles.add(fromrow-i);
+						markedtiles.add(fromcol-i);
+					}
+				}
+			}
+			else if(destrow-fromrow > 0 && destcol - fromcol < 0){ //down right
+				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
+					if(!(fromrow + i == destrow) && !(fromcol - i == destcol)){
+						markedtiles.add(fromrow+i);
+						markedtiles.add(fromcol-i);
+					}
+				}
+			}
+		}
+			catch(ArithmeticException | NumberFormatException e){
+				System.err.println("ERROR line 393 chessboard");
+			}
+		}
 	}
 	
 	public boolean checkIfPieceCanHit(ChessPiece piece, int destrow, int destcol){
@@ -376,5 +474,30 @@ public class ChessBoard extends Observable{
 			return true;
 		}
 		return false;
+	}
+	
+	public int diagonalDistance(int fromrow, int fromcol, int destrow, int destcol){
+		double d= 0;
+		if(Math.abs(( (double)destcol - (double)fromcol)/((double)destrow-(double)fromrow)) == 1.0){
+			d = Math.sqrt(Math.pow(destrow - fromrow, 2) + Math.pow(destcol - destrow, 2));
+			System.out.println("d is "+d);
+			if(destrow-fromrow > 0 && destcol - fromcol > 0){ //up right
+			}
+			else if(destrow - fromrow < 0 && destcol - fromcol > 0){ //up left
+			}
+			else if(destrow-fromrow < 0 && destcol - fromcol < 0){ //down left
+			}
+			else if(destrow-fromrow > 0 && destcol - fromcol < 0){ //down right
+			}
+		}
+		return (int) d;
+	}
+	
+	public void setCheck(String check){
+		this.check = check;
+	}
+	
+	public static String getCheck(){
+		return check;
 	}
 }

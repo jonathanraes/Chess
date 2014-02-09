@@ -17,6 +17,7 @@ public class ChessPieceIcon extends JLabel{
 	ImageIcon ICON;
 	boolean isSelected = false;
 	int number;
+	boolean marked = false;
 	public ChessPieceIcon(ChessPiece piece){
 		/**
 		 * 0 = WHITE
@@ -158,6 +159,14 @@ public class ChessPieceIcon extends JLabel{
 	public void setSelected(boolean b){
 		isSelected = b;
 		return;
+	}
+	
+	public void setMarked(boolean m){
+		marked=m;
+	}
+	
+	public boolean getMarked(){
+		return marked;
 	}
 	
 	public void removeIcon(){

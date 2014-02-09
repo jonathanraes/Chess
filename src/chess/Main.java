@@ -8,6 +8,8 @@ import chess.view.MainFrame;
 
 public class Main {
 	public static void main(String[] args){
+		
+		
 		ChessBoard board = new ChessBoard();
 		board.initializeBoard();
 		MainFrame mainframe = new MainFrame("Chess  by Jonathan Raes", board);

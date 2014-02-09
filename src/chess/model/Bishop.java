@@ -1,5 +1,7 @@
 package chess.model;
 
+import java.util.ArrayList;
+
 public class Bishop extends ChessPiece {
 ChessBoard board;
 
@@ -19,11 +21,26 @@ ChessBoard board;
 		}
 	}
 	
+	public boolean isPossibleCheckMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		if(!board.getCheck().equals("")){
+			for(int i = 0; i < board.getMarkedList().size(); i++){
+				if(i % 2 ==0){
+					if((destrow == board.getMarkedList().get(i)) && (destcol == board.getMarkedList().get(i+1))){
+						if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
 			int destcol) {
-		try{
+			try{
 			if(Math.abs(( (double)destcol - (double)fromcol)/((double)destrow-(double)fromrow)) == 1.0){
 				if(destrow-fromrow > 0 && destcol - fromcol > 0){ //up right
 					for(int i = 1; i <= Math.abs(fromrow-destrow); i++){

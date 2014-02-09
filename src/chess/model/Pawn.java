@@ -18,7 +18,21 @@ ChessBoard board;
 			return false;
 		}
 	}
-	
+	public boolean isPossibleCheckMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		if(!board.getCheck().equals("")){
+			for(int i = 0; i < board.getMarkedList().size(); i++){
+				if(i % 2 ==0){
+					if((destrow == board.getMarkedList().get(i)) && (destcol == board.getMarkedList().get(i+1))){
+						if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow, int destcol){
 		if(this.getTeam().equals("White")){
 			if(destrow == fromrow && destcol == fromcol+1){ //straight ahead 
@@ -28,7 +42,6 @@ ChessBoard board;
 				else {
 					return false;
 				}
-						
 			}
 			if(fromcol == 1 && destcol == 3 && fromrow == destrow){
 				if(board.getPiece(destrow, 2) == null){

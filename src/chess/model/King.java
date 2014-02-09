@@ -24,6 +24,23 @@ public class King extends ChessPiece {
 		return this.getName();
 	}
 
+	public boolean isPossibleCheckMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		/*if(!board.getCheck().equals("")){
+			for(int i = 0; i < board.getMarkedList().size(); i++){
+				if(i % 2 ==0){
+					if((destrow == board.getMarkedList().get(i)) && (destcol == board.getMarkedList().get(i+1))){
+						if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;*/
+		return isPossibleMove(fromrow, fromcol, destrow, destcol);
+	}
+	
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
 			int destcol) {

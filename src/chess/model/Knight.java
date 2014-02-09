@@ -1,5 +1,7 @@
 package chess.model;
 
+import java.awt.Color;
+
 
 public class Knight extends ChessPiece {
 	 ChessBoard board;
@@ -18,7 +20,21 @@ public class Knight extends ChessPiece {
 			return false;
 		}
 	}
-
+	public boolean isPossibleCheckMove(int fromrow, int fromcol, int destrow,
+			int destcol) {
+		if(!board.getCheck().equals("")){
+			for(int i = 0; i < board.getMarkedList().size(); i++){
+				if(i % 2 ==0){
+					if((destrow == board.getMarkedList().get(i)) && (destcol == board.getMarkedList().get(i+1))){
+						if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
 			int destcol) {
@@ -41,7 +57,7 @@ public class Knight extends ChessPiece {
 				(fromrow - 1 == destrow && fromcol - 2 == destcol)|| //down-down-right
 				(fromrow - 2 == destrow && fromcol + 1 == destcol)|| //right-right-up
 				(fromrow - 2 == destrow && fromcol - 1 == destcol)){ //right-right-down
-				
+		
 				if(board.getPiece(destrow, destcol) == null){
 					return true;
 				}
