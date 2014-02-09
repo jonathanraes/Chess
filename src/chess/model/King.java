@@ -51,7 +51,8 @@ public class King extends ChessPiece {
 				(destrow == fromrow-1 && fromcol == destcol+1)|| //up-left
 				(destrow == fromrow+1 && fromcol == destcol+1)|| //right-up
 				(destrow == fromrow+1 && fromcol == destcol-1)|| //right-down
-				(destrow == fromrow-1 && fromcol == destcol-1) //left-down
+				(destrow == fromrow-1 && fromcol == destcol-1)|| //left-down
+				(destrow == fromrow && fromcol == destcol) //same tile
 				){
 			
 			if(board.getPiece(destrow, destcol) == null){

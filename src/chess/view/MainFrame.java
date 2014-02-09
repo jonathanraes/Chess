@@ -280,9 +280,12 @@ public class MainFrame extends JFrame implements Observer{
 		board.setCheck(ischeck);
 		if(!ischeck.equals("")){
 			if(board.checkForCheckMate(ischeck)){
-				endGame();
+				endGame(ischeck.equals("Black") ? "White" : ischeck);		
+				panel.setBackground(Color.red);
 			}
-			setCheckPane(true);
+			else{ 
+				setCheckPane(true);
+			}
 		}
 		else{
 			setCheckPane(false);
@@ -309,15 +312,16 @@ public class MainFrame extends JFrame implements Observer{
 		}
 		panel.removeAll();
 		ArrayList<Integer> tileslist = board.getMarkedList();
+		//Building tiles
 		int count = 0;
 		for(int i = 0; i < 8; i++){
 			for(int col = 0; col < 8; col++){
 				tile = new Tile(count);
 				tile.setLayout(new BorderLayout());
-				tile.setVisible(true);
+//				tile.setVisible(true);
 				pieces = new ChessPieceIcon(board.getPiece(col, i));
 				int row = (count / 8) % 2;
-				boolean check = false;
+//				boolean check = false;
 				if (row == 0){
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
@@ -325,7 +329,7 @@ public class MainFrame extends JFrame implements Observer{
 								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
 //								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
-								check = true;
+//								check = true;
 							}
 					}
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
@@ -351,7 +355,7 @@ public class MainFrame extends JFrame implements Observer{
 								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
 //								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
-								check = true;
+//								check = true;
 							}
 					}
 					if(board.getSelectedPiece() != null && board.getPiece(col, i) == board.getSelectedPiece()){ //The Tile of the selected piece
@@ -377,12 +381,20 @@ public class MainFrame extends JFrame implements Observer{
 			}
 		}
 		board.clearMarkedList();
-		containerPanel.add(panel, CONTRAINTS);
-		setVisible(true);
+		//panel.setBounds(0, 0, 800, 750);
+		//containerPanel.add(panel);
+		//setVisible(true);
 	}			
 	
-	public void endGame(){
-		System.out.println("CHECKMATE!!");
+	public void endGame(String winner){
+		Font newFont = new Font(Font.SERIF, Font.PLAIN, 19);
+		checkpane.setFont(newFont);
+		StyleContext sc = StyleContext.getDefaultStyleContext();
+		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
+		aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+		aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+		checkpane.setCharacterAttributes(aset, true);
+		checkpane.setText("Checkmate! " + winner + " Wins!");
 	}
 	
 	/**

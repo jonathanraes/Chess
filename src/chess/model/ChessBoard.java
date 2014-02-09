@@ -440,32 +440,29 @@ public class ChessBoard extends Observable{
 	}
 	
 	public boolean checkForCheckMate(String team){
-		int[] whiteKingLoc = {0,0};
-		int[] blackKingLoc = {0,0};
+		int[] kingLoc = {0,0};
 		int possibleMoves = 0;
 		for(int row = 0; row < 8; row++){
 			for(int col = 0; col < 8; col++){
-				if(board[row][col] == whiteking){
-					whiteKingLoc[0] = row;
-					whiteKingLoc[1] = col;
-				}
-				if(board[row][col] == blackking){
-					blackKingLoc[0] = row;
-					blackKingLoc[1] = col;
+				if(team.equals("Black") ? board[row][col] == blackking : board[row][col] == whiteking){
+					kingLoc[0] = row;
+					kingLoc[1] = col;
 				}
 			}
 		}
 		
 		for(int row = 0; row < 8; row++){
 			for(int col = 0; col < 8; col++){
-				if(team.equals("Black")){
-					if(blackking.isPossibleMove(blackKingLoc[0], blackKingLoc[1], row, col)){
+				if(blackking.isPossibleMove(kingLoc[0], kingLoc[1], row, col)){
+					if(canAnyoneHit(row, col, team.equals("Black") ? "White" : team)){
 						possibleMoves++;
 					}
 				}
-				else{
-					if(whiteking.isPossibleMove(whiteKingLoc[0], whiteKingLoc[1], row, col)){
-						possibleMoves++;
+				for(int i = 0; i < markedtiles.size(); i++){
+					if(i %  2 == 0 && markedtiles.get(i) == row && markedtiles.get(i+1) == col){
+						if(canAnyoneHit(row, col, team) || blackking.isPossibleMove(kingLoc[0], kingLoc[1], row, col)){
+							possibleMoves++;
+						}
 					}
 				}
 			}
