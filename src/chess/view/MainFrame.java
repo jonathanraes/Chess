@@ -2,9 +2,11 @@ package chess.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
@@ -18,6 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -53,10 +56,11 @@ public class MainFrame extends JFrame implements Observer{
 	GridBagConstraints CONTRAINTS;
 	JPanel containerPanel;
 	JTextPane checkpane;
+	TimePanel timepane;
 	
 	boolean csettingsopened = false;
 	
-	public MainFrame(String title, ChessBoard board) throws HeadlessException {
+	public MainFrame(String title, ChessBoard board, TimePanel timepane) throws HeadlessException {
 		super(title);
 		this.board = board;
 		informationpanel = new JPanel();
@@ -64,16 +68,31 @@ public class MainFrame extends JFrame implements Observer{
 		selectedpiecepane = new JTextPane();
 		checkpane = new JTextPane();
 		
-		informationpanel.setLayout(new GridLayout(1,3));
-		informationpanel.add(informationpane);
-		informationpanel.add(selectedpiecepane);
-		informationpanel.add(checkpane);
+		informationpanel.setLayout(new GridBagLayout());
+		GridBagConstraints CONSTRAINTS = new GridBagConstraints();
+		CONSTRAINTS.gridwidth = 2;
+		CONSTRAINTS.fill = GridBagConstraints.BOTH;
+		CONSTRAINTS.anchor = GridBagConstraints.LINE_START;
+		informationpane.setPreferredSize(new Dimension(350, 30));
+		informationpanel.add(informationpane, CONSTRAINTS);
+		CONSTRAINTS.gridx = 2;
+		selectedpiecepane.setPreferredSize(new Dimension(350, 30));
+		informationpanel.add(selectedpiecepane, CONSTRAINTS);
+		CONSTRAINTS.gridx = 4;
+		checkpane.setPreferredSize(new Dimension(140, 30));
+		informationpanel.add(checkpane, CONSTRAINTS);
+		CONSTRAINTS.gridx = 6;
+		CONSTRAINTS.gridwidth = 1;
+		timepane = new TimePanel();
+		timepane.setPreferredSize(getPreferredSize());
+		informationpanel.add(timepane, CONSTRAINTS);
+		
 		informationpane.setEditable(false);
 		selectedpiecepane.setEditable(false);
 		setPaneText(board.getTurn());
 		setSelctedPiecePaneText("No selected Piece");
-		controller = new Controller(board, this);
-		mousecontroller = new Controller(board, this);
+		controller = new Controller(board, this, timepane);
+		mousecontroller = new Controller(board, this, timepane);
 		panel.setLayout(new GridLayout(8,8));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(970,828);
@@ -117,6 +136,12 @@ public class MainFrame extends JFrame implements Observer{
 			containerPanel.add(fallenPiecesPanel);
 			add(containerPanel, BorderLayout.CENTER);
 	}
+	
+	public void emptyFallenPiecesPanel(){
+		team1panel.removeAll();
+		team2panel.removeAll();
+	}
+	
 	public void colorSettingMenu(){
 		csettingframe = new JFrame("Color Settings");
 		JPanel cpanel = new JPanel(new BorderLayout());
@@ -325,7 +350,7 @@ public class MainFrame extends JFrame implements Observer{
 				if (row == 0){
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
-							if(ischeck.equals("") ? piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i) : piece.isPossibleCheckMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+							if(ischeck.equals("") ? piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i, false) : piece.isPossibleCheckMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
 								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
 //								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);
@@ -351,7 +376,7 @@ public class MainFrame extends JFrame implements Observer{
 				else{
 					if(selected instanceof ChessPiece){
 						ChessPiece piece = (ChessPiece) selected;
-						if(ischeck.equals("") ? piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i) : piece.isPossibleCheckMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
+						if(ischeck.equals("") ? piece.isPossibleMove(selectedpiecetile[0], selectedpiecetile[1], col, i, false) : piece.isPossibleCheckMove(selectedpiecetile[0], selectedpiecetile[1], col, i)){
 								tile.setBorder(BorderFactory.createLineBorder(Color.blue, 5));
 //								tile.setBackground(Color.red);
 								System.out.println("Setting green background for " + i + "," +col);

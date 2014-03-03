@@ -2,16 +2,14 @@ package chess.model;
 
 
 public class Queen extends ChessPiece {
-	ChessBoard board;
 	
 	public Queen(String name, String team, ChessBoard board) {
-		super(name, team);
-		this.board = board;
+		super(name, team, board);
 	}
 
 	@Override
 	public boolean move(int fromrow, int fromcol, int destrow, int destcol) {
-		if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+		if(isPossibleMove(fromrow, fromcol, destrow, destcol, false)){
 			board.move(fromrow, fromcol, destrow, destcol);
 			return true;
 		}
@@ -25,7 +23,7 @@ public class Queen extends ChessPiece {
 			for(int i = 0; i < board.getMarkedList().size(); i++){
 				if(i % 2 ==0){
 					if((destrow == board.getMarkedList().get(i)) && (destcol == board.getMarkedList().get(i+1))){
-						if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+						if(isPossibleMove(fromrow, fromcol, destrow, destcol, false)){
 							return true;
 						}
 					}
@@ -36,7 +34,7 @@ public class Queen extends ChessPiece {
 	}
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
-			int destcol) {
+			int destcol, boolean checker) {
 		if(fromrow == destrow && fromcol == destcol){
 			return false;
 		}
@@ -46,12 +44,12 @@ public class Queen extends ChessPiece {
 				for(int col = fromcol; col > destcol; col--){
 					if(col-1 == destcol){
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 							String selected = board.getPiece(fromrow, fromcol).getTeam();
 							String dest = board.getPiece(fromrow, destcol).getTeam();
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -65,18 +63,18 @@ public class Queen extends ChessPiece {
 							return false;
 					}
 				}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 			else{ //moving upwards	
 				for(int col = fromcol; col < destcol; col++){
 					if(col+1 == destcol){
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 							String selected = board.getPiece(fromrow, fromcol).getTeam();
 							String dest = board.getPiece(fromrow, destcol).getTeam();
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -90,7 +88,7 @@ public class Queen extends ChessPiece {
 						return false;
 					}
 				}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 				
 			}
 		}
@@ -100,10 +98,10 @@ public class Queen extends ChessPiece {
 				for(int row = fromrow; row < destrow; row++){
 					if(row+1 == destrow){
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -117,16 +115,16 @@ public class Queen extends ChessPiece {
 							return false;
 					}
 				}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 			else{ //moving to the left
 				for(int row = fromrow; row > destrow; row--){
 					if(row-1 == destrow){
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -140,7 +138,7 @@ public class Queen extends ChessPiece {
 							return false;
 					}
 				}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 		}
 		else if(Math.abs(( (double)destcol - (double)fromcol)/((double)destrow-(double)fromrow)) == 1.0){
@@ -149,10 +147,10 @@ public class Queen extends ChessPiece {
 				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
 					if(fromrow + i == destrow && fromcol + i == destcol){ 
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -166,16 +164,16 @@ public class Queen extends ChessPiece {
 						return false;
 					}
 				}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 			else if(destrow - fromrow < 0 && destcol - fromcol > 0){ //up left
 					for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
 						if(fromrow - i == destrow && fromcol + i == destcol){ 
 							if(board.getPiece(destrow, destcol) == null){
-								return true;
+								return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 							}
 							else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-								return true;
+								return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 							}
 							else{
 								return false;
@@ -189,16 +187,16 @@ public class Queen extends ChessPiece {
 							return false;
 						}
 					}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 			else if(destrow-fromrow < 0 && destcol - fromcol < 0){ //down left
 				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
 					if(fromrow - i == destrow && fromcol - i == destcol){ 
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -212,16 +210,16 @@ public class Queen extends ChessPiece {
 						return false;
 					}
 				}
-			return true;
+			return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 			else if(destrow-fromrow > 0 && destcol - fromcol < 0){ //down right
 				for(int i = 1; i <= Math.abs(fromrow-destrow); i++){
 					if(fromrow + i == destrow && fromcol - i == destcol){ 
 						if(board.getPiece(destrow, destcol) == null){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
-							return true;
+							return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 						else{
 							return false;
@@ -235,7 +233,7 @@ public class Queen extends ChessPiece {
 						return false;
 					}
 				}
-			return true;
+			return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 		}
 		System.err.println("ERROR CHECK BISHOP");
 		return false;

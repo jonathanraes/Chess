@@ -2,16 +2,14 @@ package chess.model;
 
 
 public class King extends ChessPiece {
-	 ChessBoard board;
 	
 	public King(String name, String team, ChessBoard board) {
-		super(name, team);
-		this.board = board;
+		super(name, team, board);
 	}
 	
 	@Override
 	public boolean move(int fromrow, int fromcol, int destrow, int destcol) {
-		if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+		if(isPossibleMove(fromrow, fromcol, destrow, destcol, false)){
 			board.move(fromrow, fromcol, destrow, destcol);
 			return true;
 		}
@@ -38,12 +36,12 @@ public class King extends ChessPiece {
 			}
 		}
 		return false;*/
-		return isPossibleMove(fromrow, fromcol, destrow, destcol);
+		return isPossibleMove(fromrow, fromcol, destrow, destcol, false);
 	}
 	
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
-			int destcol) {
+			int destcol, boolean checker) {
 		if((destrow == fromrow && fromcol == destcol+1)|| //up
 				(destrow == fromrow && fromcol == destcol-1)|| //down
 				(destrow == fromrow+1 && fromcol == destcol)|| //right
@@ -59,7 +57,7 @@ public class King extends ChessPiece {
 				if(board.canAnyoneHit(destrow, destcol, getTeam())){
 					return false;
 				}
-				return true;
+				return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 			}
 			else{
 				if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
@@ -67,7 +65,7 @@ public class King extends ChessPiece {
 					if(board.canAnyoneHit(destrow, destcol, getTeam())){
 						return false;
 					}
-					return true;
+					return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 				}
 				else{
 					return false;

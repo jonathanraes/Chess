@@ -2,17 +2,15 @@ package chess.model;
 
 import java.awt.Color;
 
-
 public class Knight extends ChessPiece {
-	 ChessBoard board;
+
 	public Knight(String name, String team, ChessBoard board) {
-		super(name, team);
-		this.board = board;
+		super(name, team, board);
 	}
 
 	@Override
 	public boolean move(int fromrow, int fromcol, int destrow, int destcol) {
-		if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
+		if(isPossibleMove(fromrow, fromcol, destrow, destcol, false)){
 			board.move(fromrow, fromcol, destrow, destcol);
 			return true;
 		}
@@ -26,8 +24,8 @@ public class Knight extends ChessPiece {
 			for(int i = 0; i < board.getMarkedList().size(); i++){
 				if(i % 2 ==0){
 					if((destrow == board.getMarkedList().get(i)) && (destcol == board.getMarkedList().get(i+1))){
-						if(isPossibleMove(fromrow, fromcol, destrow, destcol)){
-							return true;
+						if(isPossibleMove(fromrow, fromcol, destrow, destcol, false)){
+							return checkForCheckMove(fromrow, fromcol, destrow, destcol);
 						}
 					}
 				}
@@ -37,7 +35,7 @@ public class Knight extends ChessPiece {
 	}
 	@Override
 	public boolean isPossibleMove(int fromrow, int fromcol, int destrow,
-			int destcol) {
+			int destcol, boolean checker) {
 		/*
 		 * options:
 		 * up-up-left
@@ -59,12 +57,12 @@ public class Knight extends ChessPiece {
 				(fromrow - 2 == destrow && fromcol - 1 == destcol)){ //right-right-down
 		
 				if(board.getPiece(destrow, destcol) == null){
-					return true;
+					return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 				}
 				else{
 					if(!board.getPiece(fromrow, fromcol).getTeam().equals(board.getPiece(destrow, destcol).getTeam())){
 						//encounter
-						return true;
+						return checker ? true : checkForCheckMove(fromrow, fromcol, destrow, destcol);
 					}
 					else{
 						return false;

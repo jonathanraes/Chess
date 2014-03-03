@@ -111,8 +111,7 @@ public class ChessBoard extends Observable{
 		board[6][6] = blackpawn6;
 		board[7][6] = blackpawn7;
 		board[3][7] = blackqueen;
-		board[4][7] = blackking;
-				
+		board[4][7] = blackking;				
 	}
 	
 	public void move(int fromrow, int fromcol, int destrow, int destcol){
@@ -135,6 +134,10 @@ public class ChessBoard extends Observable{
 		else{
 			turn = "Black";
 		}
+	}
+	
+	public void setPiece(int row, int col, ChessPiece piece){
+		board[row][col] = piece;
 	}
 	
 	public ChessPiece getPiece(int row, int col){
@@ -297,13 +300,13 @@ public class ChessBoard extends Observable{
 			for(int col = 0; col < 8; col++){
 				if(board[row][col] != null){
 					if(board[row][col].getTeam().equals("White")){
-						if(board[row][col].isPossibleMove(row, col, blackKingLoc[0], blackKingLoc[1])){
+						if(board[row][col].isPossibleMove(row, col, blackKingLoc[0], blackKingLoc[1], true)){
 							markTiles(row, col, blackKingLoc[0], blackKingLoc[1]);
 							
 							return "Black";
 						}
 					}else{
-						if(board[row][col].isPossibleMove(row, col, whiteKingLoc[0], whiteKingLoc[1])){
+						if(board[row][col].isPossibleMove(row, col, whiteKingLoc[0], whiteKingLoc[1], true)){
 							markTiles(row, col, whiteKingLoc[0], whiteKingLoc[1]);
 							return "White";
 						}
@@ -412,7 +415,7 @@ public class ChessBoard extends Observable{
 		for(int row = 0; row < 8; row++){
 			for(int col = 0; col < 8; col++){
 				if(board[row][col] == piece){
-					if(piece.isPossibleMove(row, col, destrow, destcol)){
+					if(piece.isPossibleMove(row, col, destrow, destcol, true)){
 						return true;
 					}
 					else{
@@ -430,7 +433,7 @@ public class ChessBoard extends Observable{
 				if(board[rows][cols] != null){
 					if(board[rows][cols] instanceof King){
 					}
-					else if(getPiece(rows, cols).isPossibleMove(rows, cols, row, col) && !getPiece(rows, cols).getTeam().equals(team)){
+					else if(getPiece(rows, cols).isPossibleMove(rows, cols, row, col, true) && !getPiece(rows, cols).getTeam().equals(team)){
 						return true;
 					}
 				}
@@ -453,14 +456,15 @@ public class ChessBoard extends Observable{
 		
 		for(int row = 0; row < 8; row++){
 			for(int col = 0; col < 8; col++){
-				if(blackking.isPossibleMove(kingLoc[0], kingLoc[1], row, col)){
-					if(canAnyoneHit(row, col, team.equals("Black") ? "White" : team)){
+				if(blackking.isPossibleMove(kingLoc[0], kingLoc[1], row, col, true)){
+					if(canAnyoneHit(row, col, team/*.equals("Black") ? "White" : team*/)){
 						possibleMoves++;
 					}
 				}
-				for(int i = 0; i < markedtiles.size(); i++){
-					if(i %  2 == 0 && markedtiles.get(i) == row && markedtiles.get(i+1) == col){
-						if(canAnyoneHit(row, col, team) || blackking.isPossibleMove(kingLoc[0], kingLoc[1], row, col)){
+				final ArrayList<Integer> tmpMarkedTiles = markedtiles;
+				for(int i = 0; i < tmpMarkedTiles.size(); i++){
+					if(i %  2 == 0 && tmpMarkedTiles.get(i) == row && tmpMarkedTiles.get(i+1) == col){
+						if(canAnyoneHit(row, col, team.equals("Black") ? "White" : team) || blackking.isPossibleMove(kingLoc[0], kingLoc[1], row, col, true)){
 							possibleMoves++;
 						}
 					}

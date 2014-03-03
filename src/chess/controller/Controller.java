@@ -12,6 +12,7 @@ import chess.model.ChessPiece;
 import chess.view.MainFrame;
 import chess.view.Tile;
 import chess.view.TilesEnum;
+import chess.view.TimePanel;
 
 public class Controller extends MouseAdapter implements ActionListener{
 	int fromrow;
@@ -21,10 +22,12 @@ public class Controller extends MouseAdapter implements ActionListener{
 	byte[] cs;
 	ChessBoard board;
 	MainFrame mainframe;
+	TimePanel timepanel;
 	
-	public Controller(ChessBoard board, MainFrame mainframe) {
+	public Controller(ChessBoard board, MainFrame mainframe, TimePanel timepanel) {
 		this.board = board;
 		this.mainframe = mainframe;	
+		this.timepanel = timepanel;
 	}
 
 	@Override
@@ -126,6 +129,8 @@ public class Controller extends MouseAdapter implements ActionListener{
 		if(e.getActionCommand().equals("New Game")){
 			board.endGame();
 			mainframe.setPaneText(board.getTurn());
+			mainframe.emptyFallenPiecesPanel();
+			timepanel.resetTimer();
 		}
 		if(e.getActionCommand().equals("Exit")){
 			System.exit(0);
