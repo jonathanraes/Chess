@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.border.Border;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -73,13 +74,13 @@ public class MainFrame extends JFrame implements Observer{
 		CONSTRAINTS.gridwidth = 2;
 		CONSTRAINTS.fill = GridBagConstraints.BOTH;
 		CONSTRAINTS.anchor = GridBagConstraints.LINE_START;
-		informationpane.setPreferredSize(new Dimension(350, 30));
+		informationpane.setPreferredSize(new Dimension(295, 30));
 		informationpanel.add(informationpane, CONSTRAINTS);
 		CONSTRAINTS.gridx = 2;
-		selectedpiecepane.setPreferredSize(new Dimension(350, 30));
+		selectedpiecepane.setPreferredSize(new Dimension(245, 30));
 		informationpanel.add(selectedpiecepane, CONSTRAINTS);
 		CONSTRAINTS.gridx = 4;
-		checkpane.setPreferredSize(new Dimension(140, 30));
+		checkpane.setPreferredSize(new Dimension(285, 30));
 		informationpanel.add(checkpane, CONSTRAINTS);
 		CONSTRAINTS.gridx = 6;
 		CONSTRAINTS.gridwidth = 1;
@@ -87,6 +88,7 @@ public class MainFrame extends JFrame implements Observer{
 		timepane.setPreferredSize(getPreferredSize());
 		informationpanel.add(timepane, CONSTRAINTS);
 		
+		informationpanel.setBackground(Color.white);
 		informationpane.setEditable(false);
 		selectedpiecepane.setEditable(false);
 		setPaneText(board.getTurn());
@@ -105,6 +107,8 @@ public class MainFrame extends JFrame implements Observer{
 		fallenPiecesPanel.setLayout(new GridLayout(2,1));
 		fallenPiecesPanel.add(team1panel);
 		fallenPiecesPanel.add(team2panel);
+		team1panel.setBackground(Color.white);
+		team2panel.setBackground(Color.white);
 		
 		createMenubar();
 	
@@ -134,6 +138,10 @@ public class MainFrame extends JFrame implements Observer{
 			containerPanel.add(panel);
 			fallenPiecesPanel.setBounds(800, 0, 170, 750);
 			containerPanel.add(fallenPiecesPanel);
+			
+			Border border = BorderFactory.createMatteBorder(0, 0, 0, 1, Color.black);
+			panel.setBorder(border);
+			panel.setBackground(Color.black);
 			add(containerPanel, BorderLayout.CENTER);
 	}
 	
@@ -255,20 +263,17 @@ public class MainFrame extends JFrame implements Observer{
 		team2.add(color14);
 		team2.add(color15);
 
-		
 		buttonPanel.add(okbutton);
 		cpanel.add(team1, BorderLayout.WEST);
 		cpanel.add(team2, BorderLayout.EAST);	
 		cpanel.add(buttonPanel, BorderLayout.SOUTH);
 		csettingframe.add(cpanel);
 		
-		
 		csettingframe.setSize(210, 270);
 		csettingframe.setResizable(false);
 		csettingframe.setVisible(true);
 		csettingframe.setAlwaysOnTop(true);
 		color1.addActionListener(controller);
-	
 	}
 	
 	public void openColorSettings(){
@@ -434,7 +439,7 @@ public class MainFrame extends JFrame implements Observer{
 	 */
 	public void setPaneText(String text){
 		Font font1 = new Font("Trebuchet MS", Font.PLAIN, 19);
-		byte[] color = board.getColorSetting();
+		byte[] color = ChessBoard.getColorSetting();
 		String turn ="";
 		switch (text.equals("White") ? color[0] : color[1]) {
 			case 0:

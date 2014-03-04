@@ -1,5 +1,6 @@
 package chess.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Insets;
@@ -71,8 +72,10 @@ public class TimePanel extends JLabel implements ActionListener
     _calendar.setTimeInMillis(starttime - System.currentTimeMillis());
     long playtime = ((System.currentTimeMillis() - starttime) / 1000);
     String timeplayed = "";
-    if(playtime > 59){
-    	timeplayed = (playtime / 60) + "m " + (playtime % 60) + "s";
+    if(playtime > 3599){
+    	timeplayed = ((int)(playtime / 3600)) + "h " + ((int)((playtime % 3600) / 60)) + "m " + (playtime % 60) + "s";
+    } else if(playtime > 59){
+    	timeplayed = ((int)(playtime / 60)) + "m " + (playtime % 60) + "s";
     } else {
     	timeplayed = playtime + "s";
     }
@@ -90,7 +93,7 @@ public class TimePanel extends JLabel implements ActionListener
    */
   public Dimension getPreferredSize()
   {
-   /* if(null == _prefSize)
+   /*if(null == _prefSize)
     {
       // This was originaly done every time.
       // and the count of instantiated objects was amazing
@@ -117,6 +120,6 @@ public class TimePanel extends JLabel implements ActionListener
         _prefSize.width += (ins.left + ins.right) + 20;
       }
     }*/
-    return new Dimension(123, 30);
+    return new Dimension(138, 30);
   }
 }
