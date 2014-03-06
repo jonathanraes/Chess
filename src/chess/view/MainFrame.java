@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -68,7 +70,6 @@ public class MainFrame extends JFrame implements Observer{
 		informationpane = new JTextPane();
 		selectedpiecepane = new JTextPane();
 		checkpane = new JTextPane();
-		
 		informationpanel.setLayout(new GridBagLayout());
 		GridBagConstraints CONSTRAINTS = new GridBagConstraints();
 		CONSTRAINTS.gridwidth = 2;
